@@ -1,0 +1,51 @@
+%sid explained his theory to mark but he could nt understand him
+has(understand_11,negative,nt_10).
+has(understand_11,agent,he_8).
+has(explained_2,agent,sid_1).
+has(explained_2,destination,mark_6).
+has(understand_11,recipient,him_12).
+has(explained_2,recipient,theory_4).
+has(explained_2,inhibited_by,understand_11).
+has(theory_4,possesed_by,his_3).
+has(explained_2,instance_of,explain).
+has(his_3,instance_of,his).
+has(mark_6,instance_of,mark).
+has(he_8,instance_of,he).
+has(nt_10,instance_of,nt).
+has(theory_4,instance_of,theory).
+has(sid_1,instance_of,sid).
+has(understand_11,instance_of,understand).
+has(him_12,instance_of,him).
+
+matching_nodes(understand_11,understand_13).
+matching_nodes(explained_2,explained_5).
+
+resolve(he_8). 
+
+
+
+%i have had it explained to i but i still do nt understand it . new yorker cartoon
+has_bg(had_3,resulting_state,explained_5).
+has_bg(understand_13,negative,nt_12).
+has_bg(had_3,agent,i_1).
+has_bg(understand_13,agent,i_9).
+has_bg(explained_5,agent,it_4).
+has_bg(explained_5,destination,i_9).
+has_bg(cartoon_18,trait,new_16).
+has_bg(explained_5,inhibited_by,understand_13).
+has_bg(nt_12,instance_of,nt).
+has_bg(cartoon_18,instance_of,cartoon).
+has_bg(i_7,instance_of,i).
+has_bg(i_9,instance_of,i).
+has_bg(explained_5,instance_of,explain).
+has_bg(had_3,instance_of,have).
+has_bg(it_4,instance_of,it).
+has_bg(understand_13,instance_of,understand).
+has_bg(new_16,instance_of,new).
+has_bg(i_1,instance_of,i).
+
+
+#hide has/3.
+#hide matching_nodes/2.
+#hide resolve/1.
+#hide has_bg/3.

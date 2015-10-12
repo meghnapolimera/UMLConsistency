@@ -1,0 +1,37 @@
+% The customer walked into the bank and stabbed one of the tellers. He was immediately taken to the emergency_room.
+% Who was taken to the emergency room? 
+% Candidate1 = customer
+% Candidate2 = teller
+% Pronoun = he
+% Answer = teller
+
+
+
+has(walked,agent,customer).
+has(walked,destination,bank).
+has(walked,next_event,stabbed).
+has(stabbed,agent,customer).
+has(stabbed,recipient,teller).
+has(stabbed,next_event,taken).
+has(taken,recipient,he).
+has(taken,destination,emergency_room).
+
+matching_nodes(stabbed,stab).
+matching_nodes(taken,take).
+
+resolve(he).
+
+
+has_bg(stab,agent,x).
+has_bg(stab,recipient,y).
+has_bg(stab,causes,injure).
+has_bg(injure,agent,x).
+has_bg(injure,recipient,y).
+has_bg(injure,next_event,take).
+has_bg(take,recipient,y).
+has_bg(take,destination,emergency_room).
+
+#hide has/3.
+#hide has_bg/3.
+#hide matching_nodes/2.
+#hide resolve/1.

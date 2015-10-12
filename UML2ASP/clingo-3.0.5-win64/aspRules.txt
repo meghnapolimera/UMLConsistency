@@ -1,0 +1,50 @@
+%background knowledge is transitive
+has_tr_bg(A,B) :- has_bg(A,S,B).
+has_tr_bg(A,C) :- has_bg(A,S,B), has_bg(B,S1,C).
+
+%knowledge from sentence is transitive
+has_tr(A,B) :- has(A,S,B).
+has_tr(A,C) :- has(A,S,B), has(B,S1,C), A!=B, B!=C.
+
+%A and B are the events or nodes in sentence graph which match to C and D 
+%events or nodes respectively from Background knowledge graph
+match(A,B,C,D) :- matching_nodes(A,C), has_tr(A,B), matching_nodes(B,D), has_tr_bg(C,D).
+
+% getting the edge from the sentence graph which has one node as the pronoun to be resolved
+need_resolve(A,S,X) :- match(A,B,C,D), has(A,S,X), resolve(X).
+need_resolve(B,S,X) :- match(A,B,C,D), has(B,S,X), resolve(X).
+
+% getting the edge from background graph which matches with the edge extracted from sentence graph
+resolution(C,S,X1) :- need_resolve(A,S,X), match(A,B,C,D), has_bg(C,S,X1).
+resolution(D,S,X1) :- need_resolve(B,S,X), match(A,B,C,D), has_bg(D,S,X1).
+
+% getting the relation i.e. edge from the background graph to resolve the pronoun
+answer_relation(D,S1) :- match(A,B,C,D), resolution(C,S,X), has_bg(D,S1,X).
+answer_relation(C,S1) :- match(A,B,C,D), resolution(D,S,X), has_bg(C,S1,X).
+
+% finally the answer is resolved 
+finalAnswer(P,X) :- answer_relation(C,S), match(A,B,C,D), has(A,S,X), resolve(P).
+finalAnswer(P,X) :- answer_relation(D,S), match(A,B,C,D), has(B,S,X), resolve(P).
+
+
+% rules for attribute matching
+need_resolve_participant(A,X,S,B) :- has(A,participant,X), has(X,S,B), resolve(X).
+
+answer_relation_participant(A,S1) :- need_resolve_participant(A,X,S,B), resolve(X), has_bg(A1,S1,T), matching_nodes(A,A1), has_bg(T,S,B),not has(A,negative,N),negatives(N).
+answer_relation_participant(A,S1) :- need_resolve_participant(A,X,S,B), resolve(X), has_bg(A1,S1,T), matching_nodes(A,A1), has_bg(T,S,B1), antonyms(B,B1),has(A,negative,N),negatives(N).
+
+finalAnswer(P,X) :- answer_relation_participant(A,S), has(A,S,X), resolve(P).
+
+%#hide.
+%#show has(A,S,B).
+%#show finalAnswer(X,Y).
+%#show has_tr_bg(X,Y).
+%#show has_tr(X,Y).
+%#show match(A,B,X,Y).
+%#show need_resolve(W,X,Y,Z).
+%#show resolution(C,S,X1).
+%#show answer_relation(A,S).
+%#show answer_relation_participant(A,B).
+%#show need_resolve_participant(A,B,S,X).
+%#show resolve(X).
+%#show matching_nodes(X,Y).

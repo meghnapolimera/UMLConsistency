@@ -1,0 +1,34 @@
+%Cyclic generalization error
+violation(X,Y,generalization_error):- gen(X,Y), gen(Y,Z), gen(Z,X), class(X;Y;Z).
+
+%Generalization & dependency error
+%violation(X,Y,genDep_error):- gen(X,Y), dep(Y,X), baseClass(X), derivedClass(Y). 
+
+%Generalization multiple Inheritance
+violation(X,Y,generalization_error):- gen(X,Y), gen(Z,Y), X!=Z, class(X;Y;Z).
+
+%There cannot be a generalization from A to B and B to A
+violation(X,Y,generalization_error):- gen(X,Y), gen(Y,X), class(X;Y).
+
+%All methods of an interface must be implemented in the class.
+violation(X,M,missing_method) :- implements(X,Y), hasMethod(Y,M), not hasMethod(X,M), class(X), interface(Y).
+
+%interface extend a class
+violation(X,Y,extends_violation) :- gen(Y,X), class(Y), interface(X).
+
+%there cannot be an association or dependency between a class and an interface
+assoc(X,Y) :- assoc(Y,X).
+violation(X,Y,association_error):- assoc(X,Y), class(X), interface(Y).
+violation(X,Y,dependancy_error) :- dep(X,Y), class(X), interface(Y).
+
+%classes/interfaces cannot be dependent on abstract classes
+violation(X,Y,dependency_abstractClass_error):- dep(X,Y), class(X), absClass(Y).
+violation(X,Y,association_abstractClass_error):- assoc(X,Y), class(X), absClass(Y).
+violation(X,Y,dependency_abstractClass_error):- dep(X,Y), interface(X), absClass(Y).
+violation(X,Y,association_abstractClass_error):- assoc(X,Y), interface(X), absClass(Y).
+
+%generalization error for multiple inheritance in abstract classes
+violation(X,Y,multiple_inheritance):- gen(X,Y), gen(X,Z), Y!=Z, absClass(X;Y;Z).
+
+%cyclic generalization
+violation(X,Y,class_generalization_error):- gen(X,Y), gen(Y,Z), gen(Z,X), absClass(X;Y;Z).

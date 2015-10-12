@@ -1,0 +1,27 @@
+class(a).
+absClass(b;d;e).
+interface(c).
+
+dep(a,b).
+dep(c,b).
+gen(b,d).
+gen(b,e).
+
+%classes/interfaces cannot be dependent on abstract classes
+violation(X,Y,dependency_abstractClass_error):- dep(X,Y), class(X), absClass(Y).
+violation(X,Y,association_abstractClass_error):- assoc(X,Y), class(X), absClass(Y).
+violation(X,Y,dependency_abstractClass_error):- dep(X,Y), interface(X), absClass(Y).
+violation(X,Y,association_abstractClass_error):- assoc(X,Y), interface(X), absClass(Y).
+
+%generalization error for multiple inheritance in abstract classes
+violation(X,Y,multiple_inheritance):- gen(X,Y), gen(X,Z), Y!=Z, absClass(X;Y;Z).
+
+%cyclic generalization
+violation(X,Y,class_generalization_error):- gen(X,Y), gen(Y,Z), gen(Z,X), absClass(X;Y;Z).
+
+
+
+#hide.
+#show violation/3.
+
+

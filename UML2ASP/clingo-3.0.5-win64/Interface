@@ -1,0 +1,25 @@
+class(b).
+interface(a).
+
+dep(b,a).
+assoc(a,b).
+gen(b,a).
+implements(b,a).
+
+hasMethod(a,m1).
+hasMethod(a,m2).
+hasMethod(b,m1).
+
+%All methods of an interface must be implemented in the class.
+violation(X,M,missing_method) :- implements(X,Y), hasMethod(Y,M), not hasMethod(X,M), class(X), interface(Y).
+
+%interface extend a class
+violation(X,Y,extends_violation) :- gen(Y,X), class(Y), interface(X).
+
+%there cannot be an association or dependency between a class and an interface
+assoc(X,Y) :- assoc(Y,X).
+violation(X,Y,association_error):- assoc(X,Y), class(X), interface(Y).
+violation(X,Y,dependancy_error) :- dep(X,Y), class(X), interface(Y).
+
+#hide.
+#show violation/3.

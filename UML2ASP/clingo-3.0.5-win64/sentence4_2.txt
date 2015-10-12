@@ -1,0 +1,27 @@
+% The fish ate the worm. It was hungry.
+% What was hungry? 
+% Candidate1 = fish
+% Candidate2 = worm
+% Pronoun = it
+% Answer = fish
+
+
+negatives(nt).
+
+has(ate,agent,fish).
+has(ate,recipient,worm).
+has(ate,participant,it).
+has(it,trait,hungry).
+
+matching_nodes(ate,eat).
+
+antonyms(tasty,non_tasty).
+antonyms(hungry,non_hungry).
+
+resolve(it).
+
+
+has_bg(eat,agent,x).
+has_bg(eat,recipient,y).
+has_bg(x,trait,hungry).
+has_bg(y,trait,tasty).

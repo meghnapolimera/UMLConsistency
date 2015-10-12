@@ -1,0 +1,26 @@
+class(airlineManagementSystem;airlineReservationSystem;airlineBookingSystem).
+baseClass(airlineManagementSystem;airlineReservationSystem;airlineBookingSystem).
+derivedClass(airlineManagementSystem;airlineReservationSystem;airlineBookingSystem).
+
+%gen(baseClass,derivedClass)
+%gen(airlineManagementSystem,airlineReservationSystem).
+gen(airlineReservationSystem,airlineBookingSystem).
+gen(airlineManagementSystem,airlineBookingSystem).
+
+%dep(X,Y): Y is dependent on X (Y to X)
+%dep(airlineBookingSystem,airlineReservationSystem).
+
+%Cyclic generalization error
+violation(X,Y,generalization_error):- gen(X,Y), gen(Y,Z), gen(Z,X), class(X;Y;Z).
+
+%Generalization & dependency error
+%violation(X,Y,genDep_error):- gen(X,Y), dep(Y,X), baseClass(X), derivedClass(Y). 
+
+%Generalization multiple Inheritance
+violation(X,Y,generalization_error):- gen(X,Y), gen(Z,Y), X!=Z, class(X;Y;Z).
+
+%There cannot be a generalization from A to B and B to A
+violation(X,Y,generalization_error):- gen(X,Y), gen(Y,X), class(X;Y).
+
+#hide.
+#show violation/3.
